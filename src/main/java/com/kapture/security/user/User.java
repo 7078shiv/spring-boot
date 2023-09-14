@@ -33,20 +33,18 @@ public class User implements UserDetails {
     private String password;
     @Column(name = "last_login_time")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date lastLoginTime;
+    private Date lastLoginTime ;
     @Column(name = "last_password_reset")
     @Temporal(TemporalType.TIMESTAMP)
     private Date lastPasswordReset;
     @Column(name = "enable", columnDefinition = "TINYINT(1)")
     private int enable=1;
-
     @PrePersist
     protected void onCreate() {
         // Set the default values when the entity is created
         lastLoginTime = new Date();
         lastPasswordReset = new Date();
     }
-
     @PreUpdate
     protected void onUpdate() {
         // Update the values on every update operation
@@ -55,7 +53,7 @@ public class User implements UserDetails {
     }
 
     @Enumerated(EnumType.STRING)
-    private Role role;
+    private Role role=Role.USER;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
