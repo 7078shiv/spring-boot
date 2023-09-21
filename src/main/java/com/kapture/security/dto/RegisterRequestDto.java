@@ -1,5 +1,4 @@
 package com.kapture.security.dto;
-import com.kapture.security.user.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -9,10 +8,10 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class RegisterRequest {
+public class RegisterRequestDto {
     private String username;
     private String password;
     private int client_id;
     private int emp_id;
-    private Role role;
+    private int enable;
 }

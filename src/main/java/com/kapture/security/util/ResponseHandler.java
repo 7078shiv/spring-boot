@@ -1,8 +1,6 @@
 package com.kapture.security.util;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,6 +11,7 @@ public class ResponseHandler {
         map.put("message", message);
         map.put("status", status);
         map.put("data", responseObj);
+
         return new ResponseEntity<>(map, status);
     }
 

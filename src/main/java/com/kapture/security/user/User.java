@@ -1,8 +1,10 @@
 package com.kapture.security.user;
+import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,7 +19,7 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Table(name = "users")
-public class User implements UserDetails {
+public class User implements UserDetails{
     // make id primary key
     @Id
     // auto increment
@@ -32,51 +34,39 @@ public class User implements UserDetails {
     @Column(name = "password")
     private String password;
     @Column(name = "last_login_time")
-    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.TIMESTAMP)@UpdateTimestamp
     private Date lastLoginTime ;
     @Column(name = "last_password_reset")
     @Temporal(TemporalType.TIMESTAMP)
     private Date lastPasswordReset;
     @Column(name = "enable", columnDefinition = "TINYINT(1)")
-    private int enable=1;
-    @PrePersist
-    protected void onCreate() {
-        // Set the default values when the entity is created
-        lastLoginTime = new Date();
-        lastPasswordReset = new Date();
-    }
-    @PreUpdate
-    protected void onUpdate() {
-        // Update the values on every update operation
-        lastLoginTime = new Date();
-        lastPasswordReset = new Date();
-    }
-
+    private int enable;
+    @NotNull
     @Enumerated(EnumType.STRING)
     private Role role=Role.USER;
-
     @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(role.name()));
+    public Collection<? extends GrantedAuthority> getAuthorities()
+    {
+        return List.of(new SimpleGrantedAuthority(role.USER.name()));
     }
-
     @Override
     public boolean isAccountNonExpired() {
         return true;
     }
-
     @Override
     public boolean isAccountNonLocked() {
         return true;
     }
-
     @Override
     public boolean isCredentialsNonExpired() {
         return true;
     }
-
     @Override
     public boolean isEnabled() {
         return true;
+    }
+    @Override
+    public String toString(){
+        return "username: "+this.username+" password: "+this.password;
     }
 }
